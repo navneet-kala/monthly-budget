@@ -84,7 +84,6 @@
     </nav>
     <h2>Summary</h2>
 
-    
     <table class="table table-striped" id="summary">
       <thead>
         <tr>
@@ -95,21 +94,27 @@
         </tr>
       </thead>
       <tbody>
-        {% for expense in expenses %} 
+        {% for r in row %} 
         <tr>
-          <td>{{ expense.category__category }}</td>
-          <td>{{ expense.c }}</td>
-          <td>{{ expense.category__planned_amount }}</td>
-          <td>{{ expense.category__planned_amount|subtract:expense.c }}</td>
+          <td>{{ r.0 }}</td>
+          <td>{{ r.2 }}</td>
+          <td>{{ r.1 }}</td>
+          {% if r.2 == None  %}
+            <td>None</td>
+          {% else %}
+            <td>{{ r.1|subtract:r.2 }}</td>
+          {% endif %}
         {% endfor %}
         </tr>
         <tr>
           <td><b>Total</b></td>
           <td><b>{{ total_actual.total }}</b></td>
           <td><b>{{ total_planned.total }}</b></td>
-          <td></td>
+          <td><b>{{ total_planned.total|subtract:total_actual.total }}</b></td>
         </tr>
       </tbody>
+    
+ 
       {{ graph|safe }}
     </table>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

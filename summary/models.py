@@ -14,8 +14,9 @@ class ExpenseCategories(models.Model):
 
 class MonthlySummary(models.Model):
     expense_date = models.DateField(null=True, blank=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    description = models.TextField(null=True)
+    amount = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, default=0)
+    description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(
         ExpenseCategories, to_field='category', on_delete=models.CASCADE, null=True)
 

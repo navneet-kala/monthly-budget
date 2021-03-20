@@ -6,17 +6,18 @@ from django.db.models import Sum, F, Count, Max, FloatField
 import matplotlib.pyplot as plt
 from io import StringIO
 import numpy as np
+from django.db import connection
 # Create your views here.
 
 
 def index(request):
-    # num_products=Count('category__category')
-    # , d=(F('category__planned_amount')/F('num_products')-F('amount')
-    # expenses = MonthlySummary.objects.values(
-    #     'category').annotate(c=Sum('amount')).values('category__category', 'c')
-    expenses = MonthlySummary.objects.select_related('category').values('category').annotate(
-        c=Sum('amount')).values(
-            'category__category', 'c', 'category__planned_amount')
+
+    sql = f"""SELECT a.category, a.planned_amount,sum(b.amount) FROM summary_ExpenseCategories as a
+    left join summary_MonthlySummary as b on b.category_id =a.category group by a.category"""
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    row = cursor.fetchall()
+
     total_planned = ExpenseCategories.objects.aggregate(
         total=Sum('planned_amount'))
     total_actual = MonthlySummary.objects.aggregate(
@@ -24,8 +25,8 @@ def index(request):
 
     graph = return_graph(total_planned['total'], total_actual['total'])
 
-    context = {'expenses': expenses, 'total_actual': total_actual,
-               'total_planned': total_planned, 'graph': graph}
+    context = {'total_actual': total_actual,
+               'total_planned': total_planned, 'graph': graph, 'row': row}
 
     return render(request, 'summary/index.html', context)
 
