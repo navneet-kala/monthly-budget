@@ -15,7 +15,7 @@ class ExpenseCategories(models.Model):
 
 
 class MonthlySummary(models.Model):
-    expense_date = models.DateField(null=True, blank=True)
+    expense_date = models.DateField(null=True)
     amount = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, default=0)
     description = models.TextField(null=True, blank=True)
