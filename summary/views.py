@@ -1,12 +1,13 @@
 from django.db.models.aggregates import Count, Max
-from summary.models import ExpenseCategories, MonthlySummary
+from summary.models import ExpenseCategories, Expenses, MonthlySummary
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Sum, F, Count, Max, FloatField
 import matplotlib.pyplot as plt
 from io import StringIO
 import numpy as np
 from django.db import connection
+from django.urls import reverse
 # Create your views here.
 
 
@@ -46,3 +47,15 @@ def return_graph(x, y):
 
     data = imgdata.getvalue()
     return data
+
+
+def expenses(request):
+    if request.method == 'POST':
+        form = Expenses(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        form = Expenses()
+
+    return render(request, 'summary/expenses.html', {'form': form})

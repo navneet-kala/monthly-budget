@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 import json
 
 # Create your models here.
@@ -8,8 +9,9 @@ class ExpenseCategories(models.Model):
     category = models.CharField(max_length=50, unique=True)
     planned_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
-    # def __str__(self):
-    #     return self.category, self.planned_amount
+    def __str__(self):
+        #     return self.category, self.planned_amount
+        return self.category
 
 
 class MonthlySummary(models.Model):
@@ -22,3 +24,10 @@ class MonthlySummary(models.Model):
 
     # def __str__(self):
     #     return self.category, self.amount
+
+
+class Expenses(ModelForm):
+    class Meta:
+        model = MonthlySummary
+        fields = ['expense_date', 'amount', 'description',
+                  'category']
