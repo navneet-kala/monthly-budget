@@ -5,13 +5,51 @@
     <h2>Expenses</h2>
 
     <p>Please use the following form to submit Daily expenses</p>
-    <form action="{% url 'expenses' %}" method="post">
+    <form id="expense" action="{% url 'expenses' %}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}     
+        {{ form.as_p }}  
         <input type="submit" value="Submit">
     </form>
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }}  </li>
+        {% endfor %}
+        </ul>
+{% endif %}
+    <table class="table table-striped" id="summary">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Description</th>
+            <th scope="col">Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in allrows %} 
+          <tr>
+            <td>{{ row.expense_date }}</td>
+            <td>{{ row.amount }}</td>
+            <td>{{ row.description }}</td>
+            <td>{{ row.category }}</td>
+          {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"
+      ></script>
+      <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+      <script>$(document).ready( function () {
+        $('#summary').DataTable();
+      } );</script>
     <script> 
         flatpickr("#id_expense_date", {enableTime: false, dateFormat: "Y-m-d"}); 
     </script>
+    <script>document.getElementById('expense').reset();</script>
 
     {% endblock %}

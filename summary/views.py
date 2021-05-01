@@ -8,6 +8,7 @@ from io import StringIO
 import numpy as np
 from django.db import connection
 from django.urls import reverse
+from django.contrib import messages
 # Create your views here.
 
 
@@ -54,8 +55,11 @@ def expenses(request):
         form = Expenses(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('index'))
+            form = Expenses()
+            messages.add_message(request, messages.INFO, 'Expense Added')
+            # return HttpResponseRedirect(reverse('index'))
     else:
         form = Expenses()
-
-    return render(request, 'summary/expenses.html', {'form': form})
+    context = {'allrows': MonthlySummary.objects.order_by(
+        "-pk"), 'form': form}
+    return render(request, 'summary/expenses.html', context)
