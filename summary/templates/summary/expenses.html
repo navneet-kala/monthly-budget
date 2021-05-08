@@ -4,7 +4,7 @@
 
     <h2>Expenses</h2>
 
-    <p>Please use the following form to submit Daily expenses</p>
+    <h6>Please use the following form to submit Daily expenses</h6>
     <form id="expense" action="{% url 'expenses' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}  
