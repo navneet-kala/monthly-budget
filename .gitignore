@@ -1,2 +1,4 @@
 db.sqlite3
 **/__pycache__
+**/summary/__pycache__
+views.cpython*.pyc
