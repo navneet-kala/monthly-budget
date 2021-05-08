@@ -31,3 +31,9 @@ class Expenses(ModelForm):
         model = MonthlySummary
         fields = ['expense_date', 'amount', 'description',
                   'category']
+
+
+class Categories(ModelForm):
+    class Meta:
+        model = ExpenseCategories
+        fields = ['category', 'planned_amount']

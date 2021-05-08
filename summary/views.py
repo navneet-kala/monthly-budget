@@ -1,5 +1,5 @@
 from django.db.models.aggregates import Count, Max
-from summary.models import ExpenseCategories, Expenses, MonthlySummary
+from summary.models import Categories, ExpenseCategories, Expenses, MonthlySummary
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Sum, F, Count, Max, FloatField
@@ -63,3 +63,18 @@ def expenses(request):
     context = {'allrows': MonthlySummary.objects.order_by(
         "-pk"), 'form': form}
     return render(request, 'summary/expenses.html', context)
+
+
+def categories(request):
+    if request.method == 'POST':
+        form = Categories(request.POST)
+        if form.is_valid():
+            form.save()
+            form = Categories()
+            messages.add_message(request, messages.INFO, 'Category Added')
+            # return HttpResponseRedirect(reverse('index'))
+    else:
+        form = Categories()
+    context = {'allrows': ExpenseCategories.objects.order_by(
+        "-pk"), 'form': form}
+    return render(request, 'summary/categories.html', context)

@@ -3,3 +3,5 @@ db.sqlite3
 **/summary/__pycache__
 views.cpython*.pyc
 summary/__pycache__/views.cpython-39.pyc
+summary/migrations/0015_auto_20210508_1355.py
+summary/__pycache__/urls.cpython-39.pyc

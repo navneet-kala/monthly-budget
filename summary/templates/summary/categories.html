@@ -1,0 +1,51 @@
+{% extends 'summary/base.html' %}
+
+{% block content %}
+
+    <h2>Expense Categories</h2>
+
+    <h6>Please use the following form to Add Expense Categories</h6>
+    <form id="categories" action="{% url 'categories' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  
+        <input type="submit" value="Submit">
+    </form>
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }}  </li>
+        {% endfor %}
+        </ul>
+{% endif %}
+    <table class="table table-striped" id="summary">
+        <thead>
+          <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Planned Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in allrows %} 
+          <tr>
+            <td>{{ row.category }}</td>
+            <td>{{ row.planned_amount }}</td>
+          {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"
+      ></script>
+      <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+      <script>$(document).ready( function () {
+        $('#summary').DataTable();
+      } );</script>
+    <script> 
+        flatpickr("#id_expense_date", {enableTime: false, dateFormat: "Y-m-d"}); 
+    </script>
+    <script>document.getElementById('expense').reset();</script>
+
+    {% endblock %}
